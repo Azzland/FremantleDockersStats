@@ -8,6 +8,39 @@ import re
 import scipy
 from scipy import stats
 import numpy as np
+import math
+
+def binomialprob(n,k,p):
+    num = math.factorial(n)
+    d = n - k
+    den = math.factorial(k)*math.factorial(d)
+    C = num/den
+    a = p**(k)
+    e = 1 - p
+    b = e**(d)
+    prob = C*a*b
+    return prob
+    
+def cumul_binom_prob(n,k,p):
+    prob = 0
+    i = 0
+    while i <= k:
+        num = math.factorial(n)
+        d = n - i
+        den = math.factorial(i)*math.factorial(d)
+        C = num/den
+        #print(C)
+        a = p**(i)
+        #print(a)
+        e = 1 - p
+        b = e**(d)
+        #print(b)
+        prob += C*a*b
+        #print('p(' + str(i) + ')=')
+        #print(prob)
+        i += 1
+    
+    return prob
 
 url = 'https://afltables.com/afl/teams/fremantle/allgames.html'
 
@@ -128,7 +161,7 @@ p = wins/games
 k = input('How many games can Freo win?: ')
 k = int(k)
 
-probabilityk = 1 - stats.binom.cdf(k,n,p)
+probabilityk = 1 - cumul_binom_prob(n,k,p)
 
 print('Based on historical Freo data')
 print('The probability of Freo winning')
